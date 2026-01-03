@@ -58,7 +58,7 @@ algorithm:
   group_size: 1
   reward_coef: 1.0
   rollout_epoch: 1
-  eval_rollout_epoch: 1 # set eval_rollout_epoch > 0 when enable runner.only_eval or runner.val_check_interval > 0
+  eval_rollout_epoch: 2 # set eval_rollout_epoch > 0 when enable runner.only_eval or runner.val_check_interval > 0
 
   reward_type: chunk_level
   logprob_type: chunk_level
@@ -126,7 +126,7 @@ rollout:
   group_name: "RolloutGroup"
   backend: "huggingface"
   enable_offload: True
-  pipeline_stage_num: 1
+  pipeline_stage_num: 2
 
   model:
     model_path: "/path/to/isaaclab_stack_cube_gr00t_ckpt"
@@ -138,7 +138,7 @@ actor:
   micro_batch_size: 1
   global_batch_size: 2
   seed: 1234
-  enable_offload: False
+  enable_offload: True
 
   # Override the default values in model/gr00t
   model:

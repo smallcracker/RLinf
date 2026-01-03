@@ -127,5 +127,5 @@ class IsaaclabStackCubeEnv(IsaaclabBaseEnv):
         return env_obs
 
     def add_image(self, obs):
-        img = obs["policy"]["table_cam"][0].cpu().numpy()
+        img = obs["policy"]["wrist_cam"][0].cpu().numpy()
         return img

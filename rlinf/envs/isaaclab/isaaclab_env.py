@@ -123,6 +123,9 @@ class IsaaclabBaseEnv(gym.Env):
 
     def step(self, actions=None, auto_reset=True):
         obs, step_reward, terminations, truncations, infos = self.env.step(actions)
+        # Rotate wrist camera images by 180 degrees (flip both spatial axes)
+        # obs["policy"]["wrist_cam"] = torch.flip(obs["policy"]["wrist_cam"], dims=[1, 2])
+        # obs["policy"]["table_cam"] = torch.flip(obs["policy"]["table_cam"], dims=[1, 2])
 
         if self.video_cfg.save_video:
             self.images.append(self.add_image(obs))
