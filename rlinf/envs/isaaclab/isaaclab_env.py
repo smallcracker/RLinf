@@ -98,7 +98,7 @@ class IsaaclabBaseEnv(gym.Env):
     def _record_metrics(self, step_reward, terminations, infos):
         episode_info = {}
         self.returns += step_reward
-        self.success_once = self.success_once | terminations
+        self.success_once = self.success_once | (step_reward > 0)
         # batch level
         episode_info["success_once"] = self.success_once.clone()
         episode_info["return"] = self.returns.clone()
@@ -126,6 +126,10 @@ class IsaaclabBaseEnv(gym.Env):
         # Rotate wrist camera images by 180 degrees (flip both spatial axes)
         # obs["policy"]["wrist_cam"] = torch.flip(obs["policy"]["wrist_cam"], dims=[1, 2])
         # obs["policy"]["table_cam"] = torch.flip(obs["policy"]["table_cam"], dims=[1, 2])
+
+        step_reward = step_reward.clone()
+        terminations = terminations.clone()
+        truncations = truncations.clone()
 
         if self.video_cfg.save_video:
             self.images.append(self.add_image(obs))
@@ -240,7 +244,7 @@ class IsaaclabBaseEnv(gym.Env):
             output_dir = os.path.join(output_dir, f"{video_sub_dir}")
         os.makedirs(output_dir, exist_ok=True)
         mp4_path = os.path.join(output_dir, f"{self.video_cnt}.mp4")
-        video_writer = imageio.get_writer(mp4_path, fps=30)
+        video_writer = imageio.get_writer(mp4_path, fps=20)
         for img in self.images:
             video_writer.append_data(img)
         video_writer.close()
